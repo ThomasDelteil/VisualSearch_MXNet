@@ -360,7 +360,7 @@ search(index, k)
 
 
 ```python
-path = 'skirt.jpg'
+path = 'dress.jpg'
 ```
 
 
