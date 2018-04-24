@@ -216,6 +216,7 @@ features = np.zeros((len(dataset), EMBEDDING_SIZE), dtype=np.float32)
 tick = time.time()
 n_print = 100
 j = 0
+net.hybridize()
 for i, (data, label) in enumerate(dataloader):
     data = data.as_in_context(ctx)
     if i%n_print == 0 and i > 0:
