@@ -4,11 +4,11 @@
 
 In this tutorial we will create a Visual Search engine for browsing 1M amazon product images.
 
-First step, indexing the image dataset by computing the image embeddings using a pre-trained network as a featurizer:
+1. First step, indexing the image dataset by computing the image embeddings using a pre-trained network as a featurizer:
 
 ![](images/intro_1.png)
 
-Second step, query the index using an efficient K-NN search algorithm, here we use [Hierarchical Navigable Small World graphs (HNSW)](https://github.com/nmslib/hnsw)
+2. Second step, query the index using an efficient K-NN search algorithm, here we use [Hierarchical Navigable Small World graphs (HNSW)](https://github.com/nmslib/hnsw)
 
 ![](images/intro_2.png)
 
