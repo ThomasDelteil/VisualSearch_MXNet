@@ -1,0 +1,116 @@
+:root {
+    --border-offset: -2px;
+    --opacity-offset: 3000px;
+    --select-border-side: 25px;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif, sans-serif;
+    background-color: #eeeeee;
+    padding: 1.25rem 1.25rem;
+    /* 80 20 */
+}
+
+#appContainer {
+            padding: 20px;
+            background-color: white;
+}
+
+#cropper {
+    height: 400px;
+    margin-top: 20px;
+}
+
+#myForm {
+    margin: auto;
+}
+
+#dropArea {
+    height: 400px;
+    max-width: 500px;
+    background-color: rgb(240, 240, 240);
+    border: 4px dashed rgb(42, 63, 121);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+
+    align-items: center;
+    margin: auto;
+    -webkit-transition: height 0.5s; /* Safari */
+    transition: height 0.5s;
+}
+
+#dropArea.draggedOver {
+    border: 4px dashed rgba(42, 63, 121, 0);
+}
+
+.dragover {
+    border: 0;
+    border-radius: 25px;
+    fill: lightblue;
+    background-color: rgb(230, 230, 230) !important;
+}
+
+#textInfo {
+    display: flex;
+    justify-content: space-between;
+    color: rgb(42, 63, 121);
+    width: 100%;
+}
+
+#textInfoText {
+    line-height: 50px;
+    margin: auto;
+}
+
+#cropper canvas {
+    visibility: hidden;
+}
+
+#cameraButton {
+    width: 50px;
+    height: 50px;
+    margin-left: auto;
+    float: right;
+    margin-right: 20%;
+    opacity: 0.7;
+}
+
+#textInfo.draggedOver {
+    color: rgb(100, 100, 100);
+}
+
+#uploadIcon.draggedOver {
+    visibility: hidden;
+}
+
+#uploadIcon {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    fill: rgb(42, 63, 121);
+}
+
+#uploadIcon:hover, #uploadIcon:active {
+    fill: rgb(77, 117, 224);
+}
+
+@media (max-width: 700px) {
+    body {
+        padding: 0;
+        margin: 0;
+        background-color: white;
+    }
+
+    #appContainer {
+        padding: 0px;
+    }
+
+    #myForm {
+        margin: 10px;
+    }
+
+    #cropper {
+        margin: 0;
+    }
+}
