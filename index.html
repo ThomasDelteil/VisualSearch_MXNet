@@ -91,7 +91,7 @@
                        <h4>{{pred.title}}</h4>
                 </md-card-title>
                 <md-card-content>
-                    <img ng-src="{{pred.url}}" class="md-card-image" alt="Washed Out">
+                    <img ng-src="{{'https://images.weserv.nl/?url='+pred.url.slice(7)}}" class="md-card-image" alt="Washed Out">
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end left">
                     <md-button>${{pred.price}}</md-button>
