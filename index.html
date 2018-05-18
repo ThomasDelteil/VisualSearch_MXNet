@@ -4,9 +4,13 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Visual Search MXNet</title>
-    <link rel="icon" 
-      type="image/png" 
-      href="assets/images/search.png">
+    <link rel="icon" type="image/png" href="assets/images/search.png">
+    <link rel="stylesheet" type="text/css" href="assets/css/ui-cropper.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.8/angular-material.css" rel="stylesheet" />
+    <link href="https://material.angularjs.org/1.1.8/docs.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="assets/css/styles.css" />
+
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-route.min.js"></script>
@@ -14,111 +18,214 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-messages.min.js"></script>
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js"></script>
     <script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.8/angular-material.js"></script>
-    <link href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.8/angular-material.css" rel="stylesheet"/>
-    <link href="https://material.angularjs.org/1.1.8/docs.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="assets/js/ng-file-upload.min.js"></script>
     <script src="assets/js/ng-file-upload-shim.min.js"></script>
     <script src="assets/js/ui-cropper.js"></script>
-    <link rel="stylesheet" type="text/css" href="assets/css/ui-cropper.css"/>
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="assets/css/styles.css"/>
-    <style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118968561-2"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-
-        .example-card {
-            max-width: 400px;
-        }
-
-        md-card md-card-title {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding: 3px;
-            padding-left: 10px;
-            padding-right: 5px;
-        }
-        md-card {
-            width: 280px;
-        }
-        .md-card-image {
-            max-height: 200px;
-            max-width: 100%;
-            margin:auto;
-        }
-        md-card-content {
-            margin: auto;
-            padding: 5px;
-        }
-        h4 {
-            overflow:hidden;
-            text-overflow: ellipsis;
-        }
-        md-card-actions {
-            padding: 0;
-        }
-
-
-    </style>
+    gtag('config', 'UA-118968561-2');
+    </script>
 </head>
 
 <body>
-<div ng-app="fileUpload" mat-app-background basic-container id="appContainer" ng-controller="fileController">
-    <form id="myForm" name="myForm">
-        <div ngf-drop ngf-drag="drag($isDragging, $class, $event)" id="dropArea" ng-model="picFile"
-             ngf-pattern="image/*" class="cropArea">
-            <div id="textInfo" class="centered"><span id="textInfoText">Drop image or upload</span>
-                <div ngf-select ng-model="picFile" ngf-capture="'camera'" accept="image/*">
-                    <svg id="uploadIcon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve"><path d="M50,40c-8.285,0-15,6.718-15,15c0,8.285,6.715,15,15,15c8.283,0,15-6.715,15-15,C65,46.718,58.283,40,50,40z M90,25H78c-1.65,0-3.428-1.28-3.949-2.846l-3.102-9.309C70.426,11.28,68.65,10,67,10H33,c-1.65,0-3.428,1.28-3.949,2.846l-3.102,9.309C25.426,23.72,23.65,25,22,25H10C4.5,25,0,29.5,0,35v45c0,5.5,4.5,10,10,10h80,c5.5,0,10-4.5,10-10V35C100,29.5,95.5,25,90,25z M50,80c-13.807,0-25-11.193-25-25c0-13.806,11.193-25,25-25,c13.805,0,25,11.194,25,25C75,68.807,63.805,80,50,80z M86.5,41.993c-1.932,0-3.5-1.566-3.5-3.5c0-1.932,1.568-3.5,3.5-3.5,c1.934,0,3.5,1.568,3.5,3.5C90,40.427,88.433,41.993,86.5,41.993z"/></svg>
-                </div
-                >
+    <div class="header">
+        <h1>
+            <img id="visual_search_logo" src="assets/images/search.png">Visual Search with
+            <img id="logo_header" src="assets/images/mxnet_white.png">
+        </h1>
+    </div>
+    <div ng-app="fileUpload" mat-app-background basic-container id="appContainer" ng-controller="fileController">
+        <form id="myForm" name="myForm">
+            <div ngf-drop ngf-drag="drag($isDragging, $class, $event)" id="dropArea" ng-model="picFile" ngf-pattern="image/*" class="cropArea">
+                <div id="textInfo" class="centered">
+                    <span id="textInfoText">Drop image or upload &rarr;</span>
+                    <span id="textInfoText_mobile">Upload a picture &rarr;</span>
+                    <div ngf-select ng-model="picFile" ngf-capture="'camera'" accept="image/*">
+                        <svg id="uploadIcon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+                            <path d="M50,40c-8.285,0-15,6.718-15,15c0,8.285,6.715,15,15,15c8.283,0,15-6.715,15-15,C65,46.718,58.283,40,50,40z M90,25H78c-1.65,0-3.428-1.28-3.949-2.846l-3.102-9.309C70.426,11.28,68.65,10,67,10H33,c-1.65,0-3.428,1.28-3.949,2.846l-3.102,9.309C25.426,23.72,23.65,25,22,25H10C4.5,25,0,29.5,0,35v45c0,5.5,4.5,10,10,10h80,c5.5,0,10-4.5,10-10V35C100,29.5,95.5,25,90,25z M50,80c-13.807,0-25-11.193-25-25c0-13.806,11.193-25,25-25,c13.805,0,25,11.194,25,25C75,68.807,63.805,80,50,80z M86.5,41.993c-1.932,0-3.5-1.566-3.5-3.5c0-1.932,1.568-3.5,3.5-3.5,c1.934,0,3.5,1.568,3.5,3.5C90,40.427,88.433,41.993,86.5,41.993z"
+                            />
+                        </svg>
+                    </div>
+                </div>
             </div>
-        </div>
-        <span class="progress" ng-show="progress >= 0">
-                <div id="loadingProgress" style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-            </span>
-        <span ng-show="result">Upload Successful</span>
-        <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
-    </form>
-    <ui-cropper id="cropper" image="picFile  | ngfDataUrl" area-type="rectangle" on-load-begin='resetCanvasHeight()'
-                on-load-done='onLoadDone()' on-change='onImageUpdated()' result-image="croppedDataUrl"
-                ng-init="croppedDataUrl=''"></ui-cropper>
+            <div id="messages" style="display: none">
+                <span class="progress" ng-show="progress >= 0">
+                    <div id="loadingProgress" style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+                </span>
+                <span ng-show="result">Upload Successful</span>
+                <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+            </div>
+        </form>
+        <ui-cropper ng-show="croppedDataUrl" id="cropper" image="picFileUpdated" area-type="rectangle" on-load-begin='resetCanvasHeight()'
+            on-load-done='onLoadDone()' on-change='onImageUpdated()' result-image="croppedDataUrl" ng-init="croppedDataUrl=''"
+            style="display: none"></ui-cropper>
 
-    <md-content class="md-padding" layout-xs="column" layout="row" layout-wrap>
+        <md-content ng-show="predictions" class="md-padding" layout-xs="column" layout="row" layout-wrap id="tiles" style="display: none">
             <md-card ng-repeat="pred in predictions" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch="">
                 <md-card-title>
-                       <h4>{{pred.title}}</h4>
+                    <h4>{{pred.title}}</h4>
                 </md-card-title>
                 <md-card-content>
                     <img ng-src="{{'https://images.weserv.nl/?url='+pred.url.slice(7)}}" class="md-card-image" alt="Washed Out">
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end left">
                     <md-button>${{pred.price}}</md-button>
-                    <md-button><img ng-repeat="i in range() track by $index" src="assets/images/star-icon.png" width="30"></md-button>
+                    <md-button class="stars">
+                        <img ng-repeat="i in pred.stars track by $index" src="assets/images/star-icon.png" width="20">
+                        <img ng-repeat="i in pred.stars_empty track by $index" src="assets/images/star-icon-empty.png" width="20">
+                    </md-button>
                 </md-card-actions>
             </md-card>
-        </div>
-    </md-content>
-</div>
+        </md-content>
+        <div class="description_box">
+            <div class="description">
+                <p>
+                    <b>What is this?</b>
+                </p>
+                <p>This is a toy implementation of a visual search engine using
+                    <a href="http://mxnet.incubator.apache.org/">Apache MXNet Gluon</a> and deployed on
+                    <a href="https://aws.amazon.com/fr/fargate/">AWS Fargate</a> using
+                    <a href="https://github.com/awslabs/mxnet-model-server">MXNet Model Server</a>. Code available
+                    <a href="https://github.com/ThomasDelteil/VisualSearch_MXNet">here</a>.
+                    <br> Try to
+                    <b>upload an image</b> and it will search for products with similar visual features among roughly 1M items
+                    from the 2013 Amazon catalog!</p>
+                    <p>You can also pick a sample image:</p>
+                <div class="images_test">
+                    <img class="image_test" ng-click="updateImage(img.url)" ng-src="{{img.url}}" ng-repeat="img in test_images">
+                </div>
+                <p>
+                    <b>How does it work?</b>
+                    <ul>
+                        <li>
+                            Each image from the database is encoded using a convolutional neural networks into 512 numbers. These numbers, or features,
+                            act as the digital fingerprint of the image.
+                        </li>
+                        <div style="margin:auto; width:100%">
+                            <img class="image_description" id="indexing" src="assets/images/indexing.png">
+                        </div>
+                        <div style="margin:auto; width:100%">
+                            <img class="image_description" id="indexing_mobile" src="assets/images/indexing_mobile.png">
+                        </div>
+                        <li>
+                            When we present a new image to the system, it is computing the digital fingerprint of this new image. Then it finds other
+                            images in the database that are the closest match with respect to these 512 features.
+                        </li>
+                        <div style="margin:auto; width:100%">
+                            <img class="image_description" id="querying" src="assets/images/querying.png">
+                        </div>
+                        <div style="margin:auto; width:100%">
+                            <img class="image_description" id="querying_mobile" src="assets/images/querying_mobile.png">
+                        </div>
+                    </ul>
+                </p>
+                <p>Here is a talk presenting this Visual Search tutorial</p>
+                <iframe id="youtube_video" src="https://www.youtube.com/embed/9a8MAtfFVwI" frameborder="0" allow="autoplay; encrypted-media"
+                    allowfullscreen></iframe>
+                <p>
+                    <b>Resources</b>
+                    <ul>
+                        <li>
+                            <a href="https://www.slideshare.net/ThomasDelteil1/visual-search-engine-with-mxnet-gluon-and-hnsw/">Slides</a> of the video.
+                        </li>
+                        <li>
+                            <a href="http://jmcauley.ucsd.edu/data/amazon/">Dataset</a> Image-based recommendations on styles and substitutes. J. McAuley, C. Targett, J.
+                            Shi, A. van den Hengel,
+                            <i>SIGIR, 2015</i>
+                        </li>
+                        <li>
+                            <a href="https://github.com/ThomasDelteil/VisualSearch_MXNet">Visual Search Github code repository:</a> try it yourself!
+                        </li>
+                        <li>
+                            <a href="https://github.com/nmslib/hnsw/tree/master/hnswlib">HNSWlib</a> Efficient library for fast approximate KNN search.
+                        </li>
+                        <li>
+                            <a href="https://arxiv.org/abs/1603.09320">HNSW paper:</a> Efficient and robust approximate nearest neighbor search using Hierarchical Navigable
+                            Small World graphs. Yu. A. Malkov, D. A. Yashunin, 2016
+                        </li>
+                        <li>
+                            <a href="https://medium.com/apache-mxnet/mxnet-gluon-in-60-minutes-3d49eccaf266">MXNet Gluon 60 minutes crash course:</a> Get started with MXNet Gluon in this 60 minutes crash
+                            course
+                        </li>
+                        <li>
+                            Icons made by
+                            <a href="https://www.flaticon.com/authors/icomoon" title="Icomoon">Icomoon</a> and others from
+                            <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by
+                            <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0"
+                                target="_blank">CC 3.0 BY</a>
+                        </li>
+                    </ul>
+                </p>
+                <p>
+                    <b>Questions?</b>
+                    <ul>
+                        <li>Create an issue on the
+                            <a href="https://github.com/ThomasDelteil/VisualSearch_MXNet">github repo</a>
+                        </li>
+                        <li>Reach out on
+                            <a href="https://twitter.com/thdelteil/">twitter</a>,
+                            <a href="https://www.linkedin.com/in/thomasdelteil/">linkedin</a> or
+                            <a href="https://github.com/ThomasDelteil">github</a>
+                        </li>
+                    </ul>
+                </p>
+                <a style="float: right; margin-right: 10px;" href="https://github.com/thomasdelteil">
+                    <img src="https://avatars2.githubusercontent.com/u/3716307?s=460&amp;v=4" style="border-radius:50%; margin: 20px"
+                        width="50px" height="50px">Built by Thomas Delteil</a>
+            </div>
+        </div>    
+    </div>
 </body>
 <script>
     //inject ngFileUpload and ngImgCrop directives and services.
     var app = angular.module('fileUpload', ['ngMaterial', 'ngMessages', 'material.svgAssetsCache',
         'ngFileUpload', 'uiCropper']);
-    app.controller('fileController', ['$scope', '$http', '$timeout', '$httpParamSerializerJQLike', 
-        function ($scope, $http, $timeout, $httpParamSerializerJQLike) {
+    app.controller('fileController', ['$scope', '$http', '$timeout', '$httpParamSerializerJQLike', 'ngfDataUrlFilter',
+        function ($scope, $http, $timeout, $httpParamSerializerJQLike, ngfDataUrlFilter) {
+            document.getElementById('cropper').style['display'] = 'block';
+            document.getElementById('tiles').style['display'] = 'flex';
+            document.getElementById('messages').style['display'] = 'block';
+
+
+            $scope.updateImage = function (filename) {
+                $scope.picFileUpdated = window.location.href + filename;
+            };
+
+            $scope.test_images = [
+                { 'url': 'assets/images/test_1.jpg' },
+                { 'url': 'assets/images/test_2.jpg' },
+                { 'url': 'assets/images/test_3.jpg' }
+            ]
+
             $scope.upload = function (dataUrl) {
                 if (dataUrl) {
                     $http({
                         method: 'POST',
-                        url: 'https://api.thomasdelteil.com/visualsearch/predict',                    
-                        data: $httpParamSerializerJQLike({data: JSON.stringify([dataUrl])}),
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        url: 'https://api.thomasdelteil.com/visualsearch/predict',
+                        data: $httpParamSerializerJQLike({ data: JSON.stringify([dataUrl]) }),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     }).then(function (response) {
                         $timeout(function () {
                             $scope.predictions = response.data.prediction;
-                            console.log($scope.result);
+                            for (i = 0; i < $scope.predictions.length; i++) {
+                                var num = Math.floor(Math.random() * 4) + 2;
+                                $scope.predictions[i].stars = new Array(num);
+                                $scope.predictions[i].stars_empty = new Array(5 - num);
+                                if ($scope.predictions[i].title == 'NA') {
+                                    $scope.predictions[i].title = ''
+                                }
+                                if ($scope.predictions[i].price == 'NA') {
+                                    $scope.predictions[i].price = '19.99'
+                                }
+                            }
                         });
                     }, function (response) {
                         if (response.status > 0) $scope.errorMsg = response.status
@@ -129,8 +236,14 @@
                 }
             }
 
+            $scope.$watchCollection('picFile', function () {
+                if ($scope.picFile) {
+                    $scope.picFileUpdated = ngfDataUrlFilter($scope.picFile);
+                }
+            }, true);
+
             $scope.drag = function ($isDragging, $class, $event) {
-                console.log($isDragging, $class, $event);
+                
                 if ($isDragging) {
                     $('#dropArea').addClass('draggedOver');
                     $('#textInfo').addClass('draggedOver');
@@ -147,43 +260,38 @@
             }
 
             $scope.onImageUpdated = function () {
-                console.log('called me');
-                $('#cropper').height($('#cropper canvas')[0].height);
-                $('#cropper canvas').css('visibility', 'visible');
-                $('#cropper').css('background-color', 'rgba(0,0,0,0.5)');
-                $('#dropArea').height(60);
-                $scope.removeClasses();
-                $timeout(function () {
-                    $scope.upload($scope.croppedDataUrl)
-                }, 200);
-
+                if ($scope.picFileUpdated != undefined) {
+                    
+                    $('#cropper').height($('#cropper canvas')[0].height);
+                    $('#cropper canvas').css('visibility', 'visible');
+                    $('#cropper').css('background-color', 'rgba(0,0,0,0.5)');
+                    $('#dropArea').height(60);
+                    $scope.removeClasses();
+                    $timeout(function () {
+                        $scope.upload($scope.croppedDataUrl)
+                    }, 200);
+                }
             }
 
             $scope.onLoadDone = function () {
                 $scope.removeClasses();
-                console.log($scope.croppedDataUrl);
 
             }
 
             $scope.resetCanvasHeight = function () {
-                console.log('did I reset');
                 $('#cropper').height(Math.max($(window).width(), 400));
             }
-
-            $scope.range = function() {
-                return new Array(4);
-            };
 
             $(function () {
                 $('#cropper').css('max-height', Math.min(400, $(window).width()));
             });
-    }])
-    .config(function ($mdThemingProvider) {
-        $mdThemingProvider.theme('dark-grey').backgroundPalette('grey').dark();
-        $mdThemingProvider.theme('dark-orange').backgroundPalette('orange').dark();
-        $mdThemingProvider.theme('dark-purple').backgroundPalette('deep-purple').dark();
-        $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
-    });
+        }])
+        .config(function ($mdThemingProvider) {
+            $mdThemingProvider.theme('dark-grey').backgroundPalette('grey').dark();
+            $mdThemingProvider.theme('dark-orange').backgroundPalette('orange').dark();
+            $mdThemingProvider.theme('dark-purple').backgroundPalette('deep-purple').dark();
+            $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
+        });
 </script>
 
 </html>
