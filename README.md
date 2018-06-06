@@ -1,5 +1,11 @@
 
-# Visual Search with MXNet Gluon and 1M Amazon Product images
+# Visual Search with MXNet Gluon and HNSW
+
+* [Demo website](https://thomasdelteil.github.io/VisualSearch_MXNet/)
+* [Youtube video](https://www.youtube.com/watch?v=9a8MAtfFVwI)
+* [Presentation slides](https://www.slideshare.net/ThomasDelteil1/visual-search-engine-with-mxnet-gluon-and-hnsw)
+
+## How does it work?
 
 In this tutorial we will create a Visual Search engine for browsing 1M amazon product images.
 
