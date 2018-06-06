@@ -80,7 +80,7 @@
                     <h4>{{pred.title}}</h4>
                 </md-card-title>
                 <md-card-content>
-                    <img ng-src="{{'https://images.weserv.nl/?url='+pred.url.slice(7)}}" class="md-card-image" alt="Washed Out">
+                    <a href="https://www.amazon.com/dp/{{pred.ASIN}}"><img ng-src="{{'https://images.weserv.nl/?url='+pred.url.slice(7)}}" class="md-card-image" alt="Washed Out"></a>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end left">
                     <md-button>${{pred.price}}</md-button>
