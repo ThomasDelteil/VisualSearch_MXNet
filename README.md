@@ -1,7 +1,17 @@
 
 # Visual Search with MXNet Gluon and 1M Amazon Product images
 
-Pre-requisite:
+In this tutorial we will create a Visual Search engine for browsing 1M amazon product images.
+
+First step, indexing the image dataset by computing the image embeddings using a pre-trained network as a featurizer:
+
+![](images/intro_1.png)
+
+Second step, query the index using an efficient K-NN search algorithm, here we use [Hierarchical Navigable Small World graphs (HNSW)](https://github.com/nmslib/hnsw)
+
+![](images/intro_2.png)
+
+**Pre-requisite**:
 - MXNet: `pip install --pre mxnet-cu91`
 - hnswlib (follow the guide here: https://github.com/nmslib/hnsw)
 
@@ -15,6 +25,7 @@ from mxnet.gluon.data.vision.datasets import ImageFolderDataset
 from mxnet.gluon.data import DataLoader
 import numpy as np
 import wget
+import imghdr
 import json
 import pickle
 import hnswlib
@@ -106,10 +117,20 @@ NUM_CPU = multiprocessing.cpu_count()*10
 
 ```python
 pool = multiprocessing.Pool(processes=NUM_CPU)
-pool.map(download_files, list(range(NUM_CPU)))
+results = pool.map(download_files, list(range(NUM_CPU)))
 ```
 
-## Generate the image embedding
+
+```python
+# Removing all the fake jpegs
+list_files = glob.glob(os.path.join(images_path, '**.jpg'))
+for file in list_files:
+    if imghdr.what(file) != 'jpeg':
+        print('Removed {} it is a {}'.format(file, imghdr.what(file)))
+        os.remove(file)
+```
+
+## Generate the image embeddings
 
 
 ```python
@@ -127,6 +148,8 @@ We use a pre-trained model from the model zoo
 ```python
 ctx = mx.gpu()
 ```
+
+Networks from the model-zoo follow the convention that the features are on the `.features` property and output on the `.output` property. It makes it very easy to transform any pre-trained network in featurizer.
 
 
 ```python
@@ -150,7 +173,7 @@ def transform(image, label):
     return transposed, label
 ```
 
-### Load the data
+### Data Loading
 
 
 ```python
@@ -165,13 +188,10 @@ dataset = ImageFolderDataset(root=empty_folder, transform=transform)
 list_files = glob.glob(os.path.join(images_path, '**.jpg'))
 ```
 
-We take a of the files for speed sake, and replace the items of the ImageFolderDataset
+Because of the data validation and invalid URL, our actual subset is smaller than the one requested
 
 
 ```python
-#uncomment to use only a subset of the files
-#subset_num = 1000000
-#list_files = list_files[-subset_num:]
 dataset.items = list(zip(list_files, [0]*len(list_files)))
 ```
 
@@ -182,7 +202,7 @@ We load the dataset in a dataloader with as many workers as CPU cores
 dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, last_batch='keep', shuffle=False, num_workers=multiprocessing.cpu_count())
 ```
 
-### Run the data through the featurizer
+### Featurization
 
 
 ```python
@@ -203,6 +223,47 @@ for i, (data, label) in enumerate(dataloader):
     output = net(data)
     features[(i)*BATCH_SIZE:(i+1)*max(BATCH_SIZE, len(output)), :] = output.asnumpy().squeeze()
 ```
+
+    100 batches, 25600 images, 1333.611 img/sec
+    200 batches, 51200 images, 2097.873 img/sec
+    300 batches, 76800 images, 2108.257 img/sec
+    400 batches, 102400 images, 2119.740 img/sec
+    500 batches, 128000 images, 2007.043 img/sec
+    600 batches, 153600 images, 2104.296 img/sec
+    700 batches, 179200 images, 2155.201 img/sec
+    800 batches, 204800 images, 2105.456 img/sec
+    900 batches, 230400 images, 2106.616 img/sec
+    1000 batches, 256000 images, 2128.810 img/sec
+    1100 batches, 281600 images, 2125.134 img/sec
+    1200 batches, 307200 images, 2141.244 img/sec
+    1300 batches, 332800 images, 2103.341 img/sec
+    1400 batches, 358400 images, 2116.504 img/sec
+    1500 batches, 384000 images, 2090.445 img/sec
+    1600 batches, 409600 images, 2138.420 img/sec
+    1700 batches, 435200 images, 2088.554 img/sec
+    1800 batches, 460800 images, 2127.671 img/sec
+    1900 batches, 486400 images, 2118.631 img/sec
+    2000 batches, 512000 images, 2084.014 img/sec
+    2100 batches, 537600 images, 2111.905 img/sec
+    2200 batches, 563200 images, 2125.523 img/sec
+    2300 batches, 588800 images, 2106.901 img/sec
+    2400 batches, 614400 images, 2123.917 img/sec
+    2500 batches, 640000 images, 2064.876 img/sec
+    2600 batches, 665600 images, 2117.610 img/sec
+    2700 batches, 691200 images, 2112.028 img/sec
+    2800 batches, 716800 images, 2066.120 img/sec
+    2900 batches, 742400 images, 2068.632 img/sec
+    3000 batches, 768000 images, 2095.919 img/sec
+    3100 batches, 793600 images, 2104.414 img/sec
+    3200 batches, 819200 images, 2090.150 img/sec
+    3300 batches, 844800 images, 2068.915 img/sec
+    3400 batches, 870400 images, 2113.243 img/sec
+    3500 batches, 896000 images, 2105.340 img/sec
+    3600 batches, 921600 images, 2127.197 img/sec
+    3700 batches, 947200 images, 2123.200 img/sec
+    CPU times: user 4min 43s, sys: 3min 22s, total: 8min 5s
+    Wall time: 7min 42s
+
 
 ## Create the search index
 
@@ -229,6 +290,10 @@ int_labels = p.add_items(features, labels_index)
 # Controlling the recall by setting ef:
 p.set_ef(100) # ef should always be > k
 ```
+
+    CPU times: user 31min 34s, sys: 16.4 s, total: 31min 51s
+    Wall time: 1min
+
 
 
 ```python
@@ -282,8 +347,8 @@ k = 6
 search(index, k)
 ```
 
-    CPU times: user 196 ms, sys: 32 ms, total: 228 ms
-    Wall time: 216 ms
+    CPU times: user 292 ms, sys: 0 ns, total: 292 ms
+    Wall time: 287 ms
 
 
 
@@ -294,7 +359,7 @@ search(index, k)
 
 
 ```python
-path = 'skirt.jpg'
+path = 'dress.jpg'
 ```
 
 
