@@ -6,3 +6,4 @@ __pycache__
 *.log*
 *.params
 *.model
+test.jpg
