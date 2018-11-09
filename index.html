@@ -91,102 +91,107 @@
                 </md-card-actions>
             </md-card>
         </md-content>
-        <div class="description_box">
-            <div class="description">
-                <p>
-                    <b>What is this?</b>
-                </p>
-                <p>This is a toy implementation of a visual search engine using
-                    <a href="http://mxnet.incubator.apache.org/">Apache MXNet Gluon</a> and deployed on
-                    <a href="https://aws.amazon.com/fr/fargate/">AWS Fargate</a> using
-                    <a href="https://github.com/awslabs/mxnet-model-server">MXNet Model Server</a>. Code available
-                    <a href="https://github.com/ThomasDelteil/VisualSearch_MXNet">here</a>.
-                    <br> Try to
-                    <b>upload an image</b> and it will search for products with similar visual features among roughly 1M items
-                    from the 2013 Amazon catalog!</p>
-                    <p>You can also pick a sample image:</p>
-                <div class="images_test">
-                    <img class="image_test" ng-click="updateImage(img.url)" ng-src="{{img.url}}" ng-repeat="img in test_images">
-                </div>
-                <p>
-                    <b>How does it work?</b>
-                    <ul>
-                        <li>
-                            Each image from the database is encoded using a convolutional neural networks into 512 numbers. These numbers, or features,
-                            act as the digital fingerprint of the image.
-                        </li>
-                        <div style="margin:auto; width:100%">
-                            <img class="image_description" id="indexing" src="assets/images/indexing.png">
-                        </div>
-                        <div style="margin:auto; width:100%">
-                            <img class="image_description" id="indexing_mobile" src="assets/images/indexing_mobile.png">
-                        </div>
-                        <li>
-                            When we present a new image to the system, it is computing the digital fingerprint of this new image. Then it finds other
-                            images in the database that are the closest match with respect to these 512 features.
-                        </li>
-                        <div style="margin:auto; width:100%">
-                            <img class="image_description" id="querying" src="assets/images/querying.png">
-                        </div>
-                        <div style="margin:auto; width:100%">
-                            <img class="image_description" id="querying_mobile" src="assets/images/querying_mobile.png">
-                        </div>
-                    </ul>
-                </p>
-                <p>Here is a talk presenting this Visual Search tutorial</p>
-                <iframe id="youtube_video" src="https://www.youtube.com/embed/9a8MAtfFVwI" frameborder="0" allow="autoplay; encrypted-media"
-                    allowfullscreen></iframe>
-                <p>
-                    <b>Resources</b>
-                    <ul>
-                        <li>
-                            <a href="https://www.slideshare.net/ThomasDelteil1/visual-search-engine-with-mxnet-gluon-and-hnsw/">Slides</a> of the video.
-                        </li>
-                        <li>
-                            <a href="http://jmcauley.ucsd.edu/data/amazon/">Dataset</a> Image-based recommendations on styles and substitutes. J. McAuley, C. Targett, J.
-                            Shi, A. van den Hengel,
-                            <i>SIGIR, 2015</i>
-                        </li>
-                        <li>
-                            <a href="https://github.com/ThomasDelteil/VisualSearch_MXNet">Visual Search Github code repository:</a> try it yourself!
-                        </li>
-                        <li>
-                            <a href="https://github.com/nmslib/hnsw/tree/master/hnswlib">HNSWlib</a> Efficient library for fast approximate KNN search.
-                        </li>
-                        <li>
-                            <a href="https://arxiv.org/abs/1603.09320">HNSW paper:</a> Efficient and robust approximate nearest neighbor search using Hierarchical Navigable
-                            Small World graphs. Yu. A. Malkov, D. A. Yashunin, 2016
-                        </li>
-                        <li>
-                            <a href="https://medium.com/apache-mxnet/mxnet-gluon-in-60-minutes-3d49eccaf266">MXNet Gluon 60 minutes crash course:</a> Get started with MXNet Gluon in this 60 minutes crash
-                            course
-                        </li>
-                        <li>
-                            Icons made by
-                            <a href="https://www.flaticon.com/authors/icomoon" title="Icomoon">Icomoon</a> and others from
-                            <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by
-                            <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0"
-                                target="_blank">CC 3.0 BY</a>
-                        </li>
-                    </ul>
-                </p>
-                <p>
-                    <b>Questions?</b>
-                    <ul>
-                        <li>Create an issue on the
-                            <a href="https://github.com/ThomasDelteil/VisualSearch_MXNet">github repo</a>
-                        </li>
-                        <li>Reach out on
-                            <a href="https://twitter.com/thdelteil/">twitter</a>,
-                            <a href="https://www.linkedin.com/in/thomasdelteil/">linkedin</a> or
-                            <a href="https://github.com/ThomasDelteil">github</a>
-                        </li>
-                    </ul>
-                </p>
-                <a style="float: right; margin-right: 10px;" href="https://github.com/thomasdelteil">
-                    <img src="https://avatars2.githubusercontent.com/u/3716307?s=460&amp;v=4" style="border-radius:50%; margin: 20px"
-                        width="50px" height="50px">Built by Thomas Delteil</a>
+
+        <div class="description">
+            <p>
+                <b>Upload your own image or pick a sample one:</b>
+            </p>
+            <div class="images_test">
+                <img class="image_test" ng-click="updateImage(img.url)" ng-src="{{img.url}}" ng-repeat="img in test_images">
             </div>
+
+            <p>
+                <b>What is this?</b>
+            </p>
+            <p>This is a toy implementation of a visual search engine using
+                <a href="http://mxnet.incubator.apache.org/">Apache MXNet Gluon</a> and deployed on
+                <a href="https://aws.amazon.com/fr/fargate/">AWS Fargate</a> using
+                <a href="https://github.com/awslabs/mxnet-model-server">MXNet Model Server</a>. Code available
+                <a href="https://github.com/ThomasDelteil/VisualSearch_MXNet">here</a>.
+                <br> Try to
+                <b>upload an image</b> and it will search for products with similar visual features among roughly 1M items
+                from the 2013 Amazon catalog!</p>
+
+            <p>
+                <b>How does it work?</b>
+            </p>
+            <ul>
+                <li>
+                    Each image from the database is encoded using a convolutional neural networks into 512 numbers. These numbers, or features,
+                    act as the digital fingerprint of the image.
+                </li>
+                <div style="margin:auto; width:100%">
+                    <img class="image_description" id="indexing" src="assets/images/indexing.png">
+                </div>
+                <div style="margin:auto; width:100%">
+                    <img class="image_description" id="indexing_mobile" src="assets/images/indexing_mobile.png">
+                </div>
+                <li>
+                    When we present a new image to the system, it is computing the digital fingerprint of this new image. Then it finds other
+                    images in the database that are the closest match with respect to these 512 features.
+                </li>
+                <div style="margin:auto; width:100%">
+                    <img class="image_description" id="querying" src="assets/images/querying.png">
+                </div>
+                <div style="margin:auto; width:100%">
+                    <img class="image_description" id="querying_mobile" src="assets/images/querying_mobile.png">
+                </div>
+            </ul>
+
+            <p>Here is a talk presenting this Visual Search tutorial</p>
+            <iframe id="youtube_video" src="https://www.youtube.com/embed/9a8MAtfFVwI" frameborder="0" allow="autoplay; encrypted-media"
+                allowfullscreen></iframe>
+            <p>
+                <b>Resources</b>
+            </p>
+            <ul>
+                <li>
+                    <a href="https://www.slideshare.net/ThomasDelteil1/visual-search-engine-with-mxnet-gluon-and-hnsw/">Slides</a> of the video.
+                </li>
+                <li>
+                    <a href="http://jmcauley.ucsd.edu/data/amazon/">Dataset</a> Image-based recommendations on styles and substitutes. J. McAuley, C. Targett, J.
+                    Shi, A. van den Hengel,
+                    <i>SIGIR, 2015</i>
+                </li>
+                <li>
+                    <a href="https://github.com/ThomasDelteil/VisualSearch_MXNet">Visual Search Github code repository:</a> try it yourself!
+                </li>
+                <li>
+                    <a href="https://github.com/nmslib/hnsw/tree/master/hnswlib">HNSWlib</a> Efficient library for fast approximate KNN search.
+                </li>
+                <li>
+                    <a href="https://arxiv.org/abs/1603.09320">HNSW paper:</a> Efficient and robust approximate nearest neighbor search using Hierarchical Navigable
+                    Small World graphs. Yu. A. Malkov, D. A. Yashunin, 2016
+                </li>
+                <li>
+                    <a href="https://medium.com/apache-mxnet/mxnet-gluon-in-60-minutes-3d49eccaf266">MXNet Gluon 60 minutes crash course:</a> Get started with MXNet Gluon in this 60 minutes crash
+                    course
+                </li>
+                <li>
+                    Icons made by
+                    <a href="https://www.flaticon.com/authors/icomoon" title="Icomoon">Icomoon</a> and others from
+                    <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by
+                    <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0"
+                        target="_blank">CC 3.0 BY</a>
+                </li>
+            </ul>
+            <p>
+                <b>Questions?</b>
+            </p>
+            <ul>
+                <li>Create an issue on the
+                    <a href="https://github.com/ThomasDelteil/VisualSearch_MXNet">github repo</a>
+                </li>
+                <li>Reach out on
+                    <a href="https://twitter.com/thdelteil/">twitter</a>,
+                    <a href="https://www.linkedin.com/in/thomasdelteil/">linkedin</a> or
+                    <a href="https://github.com/ThomasDelteil">github</a>
+                </li>
+            </ul>
+
+            <a style="float: right; margin-right: 10px;" href="https://github.com/thomasdelteil">
+                <img src="https://avatars2.githubusercontent.com/u/3716307?s=460&amp;v=4" style="border-radius:50%; margin: 20px"
+                    width="50px" height="50px">Built by Thomas Delteil</a>
         </div>    
     </div>
 </body>
