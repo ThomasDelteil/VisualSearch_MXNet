@@ -20,6 +20,7 @@ Second step, query the index using an efficient K-NN search algorithm, here we u
 **Pre-requisite**:
 - MXNet: `pip install --pre mxnet-cu91`
 - hnswlib (follow the guide here: https://github.com/nmslib/hnsw)
+- Gluon-CV `pip install gluoncv --upgrade`
 
 
 ```python
